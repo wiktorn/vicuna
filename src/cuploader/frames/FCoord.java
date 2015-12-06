@@ -3,8 +3,10 @@ package cuploader.frames;
 import cuploader.Coord;
 import cuploader.Data;
 import cuploader.ImmutableCoordinate;
+
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
+
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.CenterMapListener;
@@ -24,7 +26,10 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.ResourceBundle;
+
 import org.jxmapviewer.VirtualEarthTileFactoryInfo;
 
 public class FCoord extends javax.swing.JFrame {
@@ -114,9 +119,9 @@ public class FCoord extends javax.swing.JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getButton() == MouseEvent.BUTTON1) {
-                DecimalFormat df = new DecimalFormat("#.######");
+                DecimalFormat df = new DecimalFormat("#.######", DecimalFormatSymbols.getInstance(Locale.US));
                 coordinate = fCoord.getMapPosition(e.getPoint());
-                fCoord.tCoor.setText(df.format(coordinate.getLat()).replace(",",".") + ";" + df.format(coordinate.getLon()).replace(",","."));
+                fCoord.tCoor.setText(df.format(coordinate.getLat()) + ";" + df.format(coordinate.getLon()));
                 fCoord.mapViewer.repaint();
             }
         }
@@ -154,10 +159,9 @@ public class FCoord extends javax.swing.JFrame {
         
         if(!multiEdit && fileCoord != null) {          
           setMapPosition(new ImmutableCoordinate(fileCoord.getLat(), fileCoord.getLon()), 2);
-          DecimalFormat df = new DecimalFormat("#.######");
+          DecimalFormat df = new DecimalFormat("#.######", DecimalFormatSymbols.getInstance(Locale.US));
           GeoPosition coordinate = mapViewer.getCenterPosition();
-          tCoor.setText(df.format(coordinate.getLatitude()).replace(",", ".")
-                  + ";" + df.format(coordinate.getLongitude()).replace(",", "."));
+          tCoor.setText(df.format(coordinate.getLatitude()) + ";" + df.format(coordinate.getLongitude()));
         } else if (Data.settings.coor != null && Data.settings.coorZoom != 0) {
           setMapPosition(Data.settings.coor, Data.settings.coorZoom);
         }
